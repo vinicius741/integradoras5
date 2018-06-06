@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
 import time
 
+
 class LED:
     __pinled = 14
     __durationtime = 1
@@ -26,12 +27,12 @@ class LED:
             time.sleep(self.__durationtime)
 
         elif typeofsignal == "blink":
-            blinktime = __durationtime/5
-
-            for i in range(0, 5):
+            blinktime = self.__durationtime/4
+            for i in range(0, 4):
                 GPIO.output(self.__pinled,GPIO.HIGH) # Liga o led
-                time.sleep(self.blinktime)
+                time.sleep(blinktime/2)
                 GPIO.output(self.__pinled,GPIO.LOW)
+                time.sleep(blinktime/2)
 
 
 l = LED()
@@ -39,3 +40,4 @@ l.setdurationtime(2)
 l.sendsignalled("on")
 l.sendsignalled("off")
 l.sendsignalled("blink")
+
