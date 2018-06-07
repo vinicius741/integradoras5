@@ -4,7 +4,7 @@ import time
 
 class LED:
     __pinled__ = 14
-    __durationtime__ = 2
+    __durationtime__ = 1
     def __init__(self):
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
@@ -41,4 +41,12 @@ class LED:
                 time.sleep(blinktime/2)
                 GPIO.output(self.__pinled__,GPIO.LOW)
                 time.sleep(blinktime/2)
+
+
+
+l = LED()
+l.setdurationtime(2)
+l.sendsignalled("on")
+l.sendsignalled("off")
+l.sendsignalled("blink")
 

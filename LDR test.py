@@ -23,3 +23,8 @@ class LDR:
             count += 1
 
         return count
+
+l = LDR()
+
+while True:
+    print (l.GetLDRCount())

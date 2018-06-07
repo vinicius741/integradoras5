@@ -56,3 +56,17 @@ class USC:
 
         usv = (usmax - usmin) * ( (isv - ismin)/(ismax - ismin) ) + usmin
         return usv
+
+F = USC(32,212, OrderScale.ASCENDING)
+
+F.SetUniversalMaxValue(100)
+F.SetUniversalMinValue(0)
+
+print(F.GetValueUniversalScale(86))
+
+C = USC(0, 100, OrderScale.ASCENDING)
+
+C.SetUniversalMaxValue(212)
+C.SetUniversalMinValue(32)
+
+print(C.GetValueUniversalScale(30))
