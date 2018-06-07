@@ -27,21 +27,21 @@ class LED:
             time.sleep(self.__durationtime__)
 
         elif typeofsignal == "blink":
-<<<<<<< HEAD
+
             blinktime = self.__durationtime__/5
 
             for i in range(0, 5):
                 GPIO.output(self.__pinled__,GPIO.HIGH) # Liga o led
                 time.sleep(blinktime)
                 GPIO.output(self.__pinled__,GPIO.LOW)
-=======
-            blinktime = self.__durationtime/4
+
+            blinktime = self.__durationtime__/4
             for i in range(0, 4):
-                GPIO.output(self.__pinled,GPIO.HIGH) # Liga o led
+                GPIO.output(self.__pinled__,GPIO.HIGH) # Liga o led
                 time.sleep(blinktime/2)
-                GPIO.output(self.__pinled,GPIO.LOW)
+                GPIO.output(self.__pinled__,GPIO.LOW)
                 time.sleep(blinktime/2)
->>>>>>> 569e6af7299c0c088f843bea66931dd0365429dc
+
 
 
 l = LED()
