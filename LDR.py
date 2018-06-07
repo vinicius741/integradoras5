@@ -2,13 +2,15 @@ import RPi.GPIO as GPIO
 import time
 
 class LDR:
-    def __init__(self, pin = 3):
+    __PinLDR__ = 3
+    def __init__(self):
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
+
+    def SetLDRPin(self, pin):
         self.__PinLDR__ = pin
 
-
-    def GetLDRCount(Self):
+    def GetLDRCount(self):
         count = 0
 
         GPIO.setup(self.__PinLDR__, GPIO.OUT)
@@ -24,5 +26,5 @@ class LDR:
 
 l = LDR()
 
-for x in range(0, 10)
+while True:
     print (l.GetLDRCount())
