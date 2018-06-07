@@ -32,6 +32,8 @@ class LED:
                 GPIO.output(self.__pinled__,GPIO.HIGH) # Liga o led
                 time.sleep(blinktime)
                 GPIO.output(self.__pinled__,GPIO.LOW)
+=======
+>>>>>>> 569e6af7299c0c088f843bea66931dd0365429dc
 
 
 l = LED()
@@ -39,3 +41,4 @@ l.setdurationtime(2)
 l.sendsignalled("on")
 l.sendsignalled("off")
 l.sendsignalled("blink")
+
