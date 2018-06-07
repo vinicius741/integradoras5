@@ -59,6 +59,9 @@ class USC:
 
 F = USC(32,212, OrderScale.ASCENDING)
 
+F.SetUniversalMaxValue(100)
+F.SetUniversalMinValue(0)
+
 print(F.GetValueUniversalScale(86))
 
 C = USC(0, 100, OrderScale.ASCENDING)
