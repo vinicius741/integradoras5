@@ -27,6 +27,7 @@ class LED:
             time.sleep(self.__durationtime__)
 
         elif typeofsignal == "blink":
+<<<<<<< HEAD
             blinktime = self.__durationtime__/5
 
             for i in range(0, 5):
