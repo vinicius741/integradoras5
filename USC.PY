@@ -13,6 +13,7 @@ class USC:
             raise Exception("O valor do MaxInput e MinInput são iguais")
         if InputScale is OrderScale.ASCENDING:
             if MaxInput < MinInput:
+                raise Exception("Escala crescente o input maximo tem que ser maior que imput minimo")
         elif InputScale is OrderScale.DESCENDING:
             if MaxInput > MinInput:
                 raise Exception("Escala decrescente o input minimo tem que ser maior que imput maximo")
