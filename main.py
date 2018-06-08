@@ -2,33 +2,50 @@ import sys
 from ConnetionUDP import ConnetionUDP
 from LDR import LDR
 from LED import LED
+from Universal import Universal
 from OrderScale import OrderScale
-from USC import USC
 
 ddress = "192.168.1.2"
 
 myled = LED()
+myled.setdurationtime(1)
+
+nodeLED = LED()
+
+nodeLED.setpinled(15)
+nodeLED.setdurationtime(1)
 
 myldr = LDR()
 
-rbscale = USC(5,100,OrderScale.DESCENDING)
+rbscale = Universal(100,10, OrderScale.DESCENDING)
 
-nmcuscale = USC(0,100, OrderScale.ASCENDING)
+nmcuscale = Universal(0,100, OrderScale.ASCENDING)
 
 conn = ConnetionUDP(555)
 
 while True:
-    print (sys.stderr, '\n Esperando mensagem ...')
+    temp = conn.ReciveData()
+    
 
-    nodeldrvalue = nmcuscale.GetValueUniversalScale(float(conn.ReciveData()))
+    nodeldrvalue = nmcuscale.GetValueUniversalScale(float(temp))
 
-    raspberryldrvalue = nmcuscale.GetValueUniversalScale(myldr.GetLDRCount())
+    raspberryldrvalue = rbscale.GetValueUniversalScale(myldr.GetLDRCount())
+    print ()
+    print ("node") 
+    print (nodeldrvalue)
+    print ("raspberrynode")
+    print (raspberryldrvalue)
+    print ()
 
-    if (abs( nodeldrvalue - raspberryldrvalue ) < 4):
+    if (abs( nodeldrvalue - raspberryldrvalue ) < 20):
         myled.sendsignalled("blink")
+        nodeLED.sendsignalled("blink")
         
     elif (nodeldrvalue > raspberryldrvalue):
         myled.sendsignalled("off")
+        nodeLED.sendsignalled("on")
 
     elif (nodeldrvalue < raspberryldrvalue):
         myled.sendsignalled("on")
+        nodeLED.sendsignalled("off")
+
