@@ -25,26 +25,10 @@ while True:
     raspberryldrvalue = nmcuscale.GetValueUniversalScale(myldr.GetLDRCount())
 
     if (abs( nodeldrvalue - raspberryldrvalue ) < 4):
-        try:
-            conn.SendData("2",ipt)
-        except:
-            print ("conexaofalhou")
-
         myled.sendsignalled("blink")
         
     elif (nodeldrvalue > raspberryldrvalue):
-        try:
-            conn.SendData("1",ipt)
-        except:
-            print ("conexaofalhou")
-
-
         myled.sendsignalled("off")
 
     elif (nodeldrvalue < raspberryldrvalue):
-        try:
-            conn.SendData("0",ipt)
-        except:
-            print ("conexaofalhou")
-            
         myled.sendsignalled("on")
