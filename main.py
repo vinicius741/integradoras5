@@ -5,7 +5,7 @@ from LED import LED
 from UniversalScaleConversion import UniversalScaleConversion
 from OrderScale import OrderScale
 
-ddress = "192.168.x.x"
+ddress = "192.168.43.107"
 
 myled = LED()
 myled.setdurationtime(4)
