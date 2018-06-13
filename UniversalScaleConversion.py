@@ -1,6 +1,6 @@
 from OrderScale import OrderScale
 
-class Universal:
+class UniversalScaleConversion:
     __MinUniversalScaleValue__ = 0
     __MaxUniversalScaleValue__ = 100
     __UniversalSacaleOrder = OrderScale.ASCENDING

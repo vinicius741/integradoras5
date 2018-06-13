@@ -2,18 +2,13 @@ import sys
 from ConnetionUDP import ConnetionUDP
 from LDR import LDR
 from LED import LED
-from Universal import Universal
+from UniversalScaleConversion import UniversalScaleConversion
 from OrderScale import OrderScale
 
-ddress = "192.168.1.2"
+ddress = "192.168.x.x"
 
 myled = LED()
-myled.setdurationtime(1)
-
-nodeLED = LED()
-
-nodeLED.setpinled(15)
-nodeLED.setdurationtime(1)
+myled.setdurationtime(4)
 
 myldr = LDR()
 
@@ -30,15 +25,15 @@ while True:
 
     raspberryldrvalue = rbscale.GetValueUniversalScale(myldr.GetLDRCount())
    
-    if (abs( nodeldrvalue - raspberryldrvalue ) < 20):
+    if (abs( nodeldrvalue - raspberryldrvalue ) < 10):
         myled.sendsignalled("blink")
-        nodeLED.sendsignalled("blink")
+        conn.SendData("2", ddress)
         
     elif (nodeldrvalue > raspberryldrvalue):
         myled.sendsignalled("off")
-        nodeLED.sendsignalled("on")
+        conn.SendData("0", ddress)
 
     elif (nodeldrvalue < raspberryldrvalue):
         myled.sendsignalled("on")
-        nodeLED.sendsignalled("off")
+        conn.SendData("1", ddress)
 
