@@ -1,100 +1,167 @@
 #include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
-
-
-const char* wifiName = "WiFi-Repeater";
-const char* wifiPass = "10203040";
-
-const char* targetUDP = "192.168.1.2";
-
-char incomingPacket[255];
+     
+const char* ssid     = "AP";
+const char* password = "10203040";     
+int port = 555;
+char * ip = "192.168.43.107";
 
 WiFiUDP udp;
+char * data = "v";
+
+int sensorPin = D2;
+
+int myvalue = 0;
+int readedValue = 0;
+
+int wifiStatus;
 
 void setup() {
-    pinMode(LED_BUILTIN, OUTPUT);
+
+    pinMode(sensorPin, INPUT);
+    pinMode(D4, OUTPUT);
+
+    // 1 = Disable, 0 = Enable
+    digitalWrite(D4, 1);
 
     Serial.begin(115200);
-    delay(10);
+    delay(200);
+
+    // We start by connecting to a WiFi network
     Serial.println();
+    Serial.println();
+    Serial.print("Your are connecting to; ");
+    Serial.println(ssid);
 
-    Serial.print("Connecting to ");
-    Serial.println(wifiName);
+    WiFi.mode(WIFI_STA);
+    udp.begin(port);
+}   
+     
+void loop() {
 
-    WiFi.begin(wifiName, wifiPass);
-
-    while (WiFi.status() != WL_CONNECTED) {
-        delay(500);
-        Serial.print(".");
-    }
+    do_sensor();
+    do_connect();
+    do_send();
+    do_listen();
 
     Serial.println("");
-    Serial.println("WiFi connected");
-    Serial.println("IP address: ");
-    Serial.println(WiFi.localIP());  
+    Serial.print("My value: ");
+    Serial.println(myvalue);
+    Serial.print("Status value: ");
+    Serial.println(readedValue);
+
+    switch (data[0]) {
+    
+        case 'o':
+          digitalWrite(D4, HIGH);
+          delay(2000);
+          break;
+          
+        case 'v':
+          digitalWrite(D4, LOW);
+          delay(2000);
+          break;
+          
+        case 'f':
+          digitalWrite(D4, LOW);
+          delay(250);
+          digitalWrite(D4, HIGH);
+          delay(250);
+          digitalWrite(D4, LOW);
+          delay(250);
+          digitalWrite(D4, HIGH);
+          delay(250);
+          digitalWrite(D4, LOW);
+          delay(250);
+          digitalWrite(D4, HIGH);
+          delay(250);
+          digitalWrite(D4, LOW);
+          delay(250);
+          digitalWrite(D4, HIGH);
+          delay(250);
+          digitalWrite(D4, LOW);
+          delay(250);
+          digitalWrite(D4, HIGH);
+          break;
+      
+    }
+    
+    /*
+    if (strcmp(data, "ovf") == 0) {
+      // desliga
+    }
+    else if (strcmp(data, "vf") == 0) {
+      // liga
+    }
+    else if (strcmp(data, "f") == 0) {
+      // pisca
+    }*/
 }
 
-void loop() {
-    sendLDR(analogRead(A0));
+void do_sensor() 
+{
+    myvalue = analogRead(A0);
+}
 
+void do_connect() {
 
+    wifiStatus = WiFi.status();
 
-    int packetSize = udp.parsePacket();
+    if(wifiStatus == WL_CONNECTED) {
 
-   
+        //Serial.println("");
+        //Serial.println("Your ESP is connected!");  
+        Serial.println("Your IP address is: ");
+        Serial.println(WiFi.localIP());  
 
-
-
-
-
-
-
-
-    Serial.printf("TAMANHO: %d\n", packetSize);
-    Serial.printf(WiFi.status());
-    if (packetSize)
-    {
-        // receive incoming UDP packets
-        Serial.printf("Received %d bytes from %s, port %d\n", packetSize, udp.remoteIP().toString().c_str(), udp.remotePort());
-        int len = udp.read(incomingPacket, 555);
-        if (len > 0)
-        {
-        incomingPacket[len] = 0;
-        }
-        Serial.printf("UDP packet contents: %s\n", incomingPacket);
-        if(incomingPacket[0] == '0')
-        {
-            delay(2000);
-        }
-        if(incomingPacket[0] == '1')
-        {
-            digitalWrite(LED_BUILTIN, LOW);
-            delay(2000);
-            digitalWrite(LED_BUILTIN, HIGH);
-        }
-        if(incomingPacket[0] == '2')
-        {
-            for(int i = 0;i<4;i++){
-                delay(250);
-                digitalWrite(LED_BUILTIN, LOW);
-                delay(250);
-                digitalWrite(LED_BUILTIN, HIGH); 
-            }
-            
-        }
-
+        delay(100);
+    }
+    else {
+        Serial.println("");
+        Serial.println("WiFi not connected, trying again ...");
+        WiFi.begin(ssid, password);
+        delay(1000);
     }
 
-
-    
     delay(1000);
+}
+
+void do_send() {
+
+    if (wifiStatus == WL_CONNECTED) {
+
+        udp.beginPacket(ip, port);
+        udp.println(myvalue);
+        udp.endPacket();
+
+        Serial.print("Sending: ");
+        Serial.println(myvalue);
+
+        delay(5);
+    }
+    else {
+        Serial.println("Connection failed");
+        delay(150);
+    }
 
 }
-void sendLDR(int dado){
-    udp.beginPacket(targetUDP, 555);
-    udp.println(dado);
-    udp.endPacket();
 
-    Serial.print("Sending: ");
-    Serial.println(dado);
+void do_listen() {
+
+    if (udp.parsePacket() > 0)
+    {
+        data = "";
+
+        while (udp.available() > 0)
+        {
+            char z = udp.read();
+            data += z;
+        }
+
+        Serial.println("");
+        Serial.print("Received data: ");
+        Serial.println(data);
+
+        // readedValue = atoi(data);
+    }
 }
