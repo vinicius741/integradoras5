@@ -25,18 +25,11 @@ conn = ConnetionUDP(555)
 
 while True:
     temp = conn.ReciveData()
-    
 
     nodeldrvalue = nmcuscale.GetValueUniversalScale(float(temp))
 
     raspberryldrvalue = rbscale.GetValueUniversalScale(myldr.GetLDRCount())
-    print ()
-    print ("node") 
-    print (nodeldrvalue)
-    print ("raspberrynode")
-    print (raspberryldrvalue)
-    print ()
-
+   
     if (abs( nodeldrvalue - raspberryldrvalue ) < 20):
         myled.sendsignalled("blink")
         nodeLED.sendsignalled("blink")
