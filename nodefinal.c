@@ -9,8 +9,6 @@ char * ip = "192.168.43.107";
 WiFiUDP udp;
 char * data = "v";
 
-int sensorPin = D2;
-
 int myvalue = 0;
 int readedValue = 0;
 
@@ -27,7 +25,6 @@ void setup() {
     Serial.begin(115200);
     delay(200);
 
-    // We start by connecting to a WiFi network
     Serial.println();
     Serial.println();
     Serial.print("Your are connecting to; ");
@@ -85,17 +82,6 @@ void loop() {
           break;
       
     }
-    
-    /*
-    if (strcmp(data, "ovf") == 0) {
-      // desliga
-    }
-    else if (strcmp(data, "vf") == 0) {
-      // liga
-    }
-    else if (strcmp(data, "f") == 0) {
-      // pisca
-    }*/
 }
 
 void do_sensor() 
@@ -109,8 +95,6 @@ void do_connect() {
 
     if(wifiStatus == WL_CONNECTED) {
 
-        //Serial.println("");
-        //Serial.println("Your ESP is connected!");  
         Serial.println("Your IP address is: ");
         Serial.println(WiFi.localIP());  
 
@@ -154,14 +138,12 @@ void do_listen() {
 
         while (udp.available() > 0)
         {
-            char z = udp.read();
-            data += z;
+            char caracterer = udp.read();
+            data += caracterer;
         }
 
         Serial.println("");
         Serial.print("Received data: ");
         Serial.println(data);
-
-        // readedValue = atoi(data);
     }
 }
